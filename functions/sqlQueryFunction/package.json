@@ -1,0 +1,11 @@
+{
+	"name": "sqlqueryfunction",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "dev@kunodigital.com",
+	"dependencies": {
+		"dotenv": "^16.5.0",
+		"mssql": "^11.0.1",
+		"zcatalyst-sdk-node": "latest"
+	}
+}

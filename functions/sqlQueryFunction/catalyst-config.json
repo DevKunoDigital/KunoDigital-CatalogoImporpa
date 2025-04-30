@@ -1,0 +1,11 @@
+{
+	"deployment": {
+		"name": "sqlqueryfunction",
+		"stack": "node20",
+		"type": "advancedio",
+		"env_variables": {}
+	},
+	"execution": {
+		"main": "index.js"
+	}
+}
