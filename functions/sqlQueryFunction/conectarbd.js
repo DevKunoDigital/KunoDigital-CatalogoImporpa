@@ -1,9 +1,9 @@
 const sql = require('mssql');
 
 const config = {
-  user: 'zohoanalytics4%6',
-  password: 'TiMW43C@7z8jJ$',
-  server: '200.46.80.189',   // tu IP
+  user: 'dev_externo',
+  password: 'dev123',
+  server: '63.141.230.5',   // tu IP
   database: 'SAGE',          // apúntalo aquí
   port: 1433,                // 1433 por defecto, cámbialo
   options: {

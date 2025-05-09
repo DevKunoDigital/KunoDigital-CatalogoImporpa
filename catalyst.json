@@ -7,7 +7,8 @@
     "source": "functions"
   },
   "client": {
-    "source": "react-app",
+    "source": "frontend",
     "plugin": "zcatalyst-cli-plugin-react"
   }
+
 }
