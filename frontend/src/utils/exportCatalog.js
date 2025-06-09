@@ -47,8 +47,10 @@ export const exportCatalog = async (
                 { header: 'Referencia', key: 'CodigoBase', width: 20 },
                 { header: 'Nombre Producto', key: 'NombreProducto', width: 30 },
                 { header: 'Color', key: 'ColorDescripcion', width: 20 },
-                { header: 'Disponible', key: 'LA', width: 15 },
-                { header: 'Solicitado', key: 'LB', width: 15 },
+                { header: 'Existencia', key: 'Existencia', width: 15 },
+                { header: 'Reservado', key: 'Reservado', width: 15 },
+                { header: 'Disponible', key: 'Disponible', width: 15 },
+                { header: 'Futuro', key: 'Futuro', width: 15 },
             ];
 
             if (includeImages) {
@@ -76,8 +78,10 @@ export const exportCatalog = async (
                     CodigoBase: item.CodigoBase,
                     NombreProducto: item.NombreProducto,
                     ColorDescripcion: item.ColorDescripcion,
-                    LA: item.LA ?? 0,
-                    LB: item.LB ?? 0,
+                    Existencia: item.Existencia ?? 0,
+                    Reservado: item.Reservado ?? 0,
+                    Disponible: item.Disponible ?? 0,
+                    Futuro: item.Futuro ?? 0,
                     Imagen: includeImages ? '' : undefined,
                 });
 
@@ -91,9 +95,9 @@ export const exportCatalog = async (
                             extension: 'jpeg',
                         });
                         sheet.addImage(imageId, {
-                            tl: { col: 5, row: row.number }, // Coordenadas de la celda
-                            ext: { width: 80, height: 80 }, // Tamaño de la imagen
-                            editAs: 'oneCell', // Asegura que la imagen se ajuste a la celda
+                            tl: { col: 7, row: row.number },
+                            ext: { width: 80, height: 80 },
+                            editAs: 'oneCell',
                         });
                     }
                 }
@@ -107,7 +111,6 @@ export const exportCatalog = async (
                         bottom: { style: 'thin' },
                         right: { style: 'thin' },
                     };
-                    // Zebra striping
                     if (i % 2 === 0) {
                         cell.fill = {
                             type: 'pattern',
@@ -123,12 +126,17 @@ export const exportCatalog = async (
                 }
             }
 
-            const totalDisponible = sheetData.reduce((sum, item) => sum + (item.LA ?? 0), 0);
-            const totalSolicitado = sheetData.reduce((sum, item) => sum + (item.LB ?? 0), 0);
+            const totalExistencia = sheetData.reduce((sum, item) => sum + (item.Existencia ?? 0), 0);
+            const totalReservado = sheetData.reduce((sum, item) => sum + (item.Reservado ?? 0), 0);
+            const totalDisponible = sheetData.reduce((sum, item) => sum + (item.Disponible ?? 0), 0);
+            const totalFuturo = sheetData.reduce((sum, item) => sum + (item.Futuro ?? 0), 0);
+
             const totalRow = sheet.addRow({
                 CodigoBase: 'TOTALES',
-                LA: totalDisponible,
-                LB: totalSolicitado,
+                Existencia: totalExistencia,
+                Reservado: totalReservado,
+                Disponible: totalDisponible,
+                Futuro: totalFuturo,
             });
 
             totalRow.font = { bold: true };

@@ -24,10 +24,9 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background: #f5f5f5;
 }
 
 h1 {
@@ -62,6 +61,16 @@ button:focus-visible {
 
 .MuiDataGrid-cell {
   overflow: visible !important;
+}
+
+.css-1b4hy9o {
+  display: flex;
+  -moz-box-pack: center;
+  justify-content: center;
+  -moz-box-align: center;
+  align-items: center;
+  min-height: 669px;
+  flex-direction: column;
 }
 
 .MuiDataGrid-row {
