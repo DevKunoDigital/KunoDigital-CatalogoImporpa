@@ -1,22 +1,47 @@
+// conectarbd.js
 const sql = require('mssql');
 
+// ⚠️ Tal cual me pediste (kunoadmin/kunoadmin + TLS off)
 const config = {
-  user: 'dev_externo',
-  password: 'dev123',
-  server: '63.141.230.5',   // tu IP
-  database: 'SAGE',          // apúntalo aquí
-  port: 1433,                // 1433 por defecto, cámbialo
+  user: 'kunoadmin',
+  password: 'kunoadmin',
+  server: '40.75.105.29',
+  database: 'SAGE',
+  port: 1433,
   options: {
-    encrypt: false,              // ← desactiva cifrado TLS
+    encrypt: false,
     trustServerCertificate: true
-  }
+  },
+  pool: { max: 10, min: 0, idleTimeoutMillis: 30000 },
+  connectionTimeout: 15000,
+  requestTimeout: 30000
 };
+
+// Pool singleton (evita reconectar por request)
+let poolPromise = null;
 
 module.exports = async () => {
   try {
-    return await sql.connect(config);
+    if (!poolPromise) {
+      console.log('[DB] Creando nueva conexión/pool a SQL...');
+      poolPromise = sql.connect(config);
+      poolPromise
+        .then(pool => {
+          console.log('[DB] Pool conectado. Versión driver:', sql.TYPES ? 'ok' : 'n/a');
+          pool.on('error', (err) => {
+            console.error('[DB] Error en el pool:', err);
+            poolPromise = null; // fuerza recreo en próximo request
+          });
+        })
+        .catch(err => {
+          console.error('[DB] Error inicial conectando pool:', err);
+          poolPromise = null;
+        });
+    }
+    return await poolPromise;
   } catch (err) {
-    console.error('Error al conectar con la base de datos:', err);
+    console.error('[DB] Error al conectar con la base de datos:', err);
+    poolPromise = null;
     throw err;
   }
 };
